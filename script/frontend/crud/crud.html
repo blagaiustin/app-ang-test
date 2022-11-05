@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		:root{
+			--crudc1:#189c90;
+			--crudc2:#555;
+			--crudc3:#81817f;
+			--crudc4:#149c5c;
+			--crudc5:#f2f2f2;
+			--crudc5h:#ddd;
+			--crudcw:#fff;
+			--crudci:#9c1818;
+
+			--crudv1:10px;
+			--crudv2:210px;
+			--crudv3:250px;
+		}
+
+		.dn-js{
+			display:none;
+		}
+
+		.crud{
+			position:relative;
+		}
+
+		.crud-layer{
+			position:absolute;
+		}
+
+		.crud input,
+		.crud select,
+		.crud textarea,
+		.crud thead tr th,
+		.crud tbody tr td,
+		.crud-conn,
+		.crud-btn,
+		.crud-create-table,
+		.crud-all-tables,
+		.crud-db-create-table-info,
+		.crud-table,
+		.crud-drop-table,
+		.crud-run-sql,
+		.crud-layer-box{
+			padding:var(--crudv1);
+		}
+
+		.crud input,
+		.crud select,
+		.crud textarea{
+			outline:none;
+		}
+
+		.crud input,
+		.crud select,
+		.crud textarea{
+			border:none;
+		}
+
+		.crud-conn,
+		.crud-create-table,
+		.crud-all-tables,
+		.crud-db-create-table-info,
+		.crud-table,
+		.crud-layer-box{
+			border:var(--crudv1) solid var(--crudc3);
+		}
+
+		.crud table,
+		.crud thead tr th,
+		.crud tbody tr td{
+			border:1px solid var(--crudc5);
+		}
+
+		.crud input,
+		.crud select,
+		.crud textarea,
+		.crud-conn,
+		.crud-create-table,
+		.crud-all-tables,
+		.crud-db-create-table-info,
+		.crud-table,
+		.crud-layer-box{
+			box-shadow:inset 2px 2px var(--crudc2),inset -2px -2px var(--crudc2);
+		}
+
+		.crud input:focus,
+		.crud select:focus,
+		.crud textarea:focus,
+		.crud-btn:active,
+		.crud-back:active,
+		.crud-x:active,
+		.crud-drop-table:active,
+		.crud-run-sql:active{
+			box-shadow:inset 2px 2px var(--crudc4),inset -2px -2px var(--crudc4);
+		}
+
+		.crud table,
+		.crud-btn + .crud-btn{
+			margin-top:var(--crudv1);
+		}
+
+		.crud table textarea{
+			margin:0;
+		}
+
+		.crud-text + input,
+		.crud-layer-box .crud-text + textarea,
+		.crud-text,
+		.crud-text-js,
+		.crud-back,
+		.crud-create-table{
+			margin-bottom:var(--crudv1);
+		}
+
+		.crud-drop-table{
+			display:inline-block;
+			margin:0 var(--crudv1) 0 0;
+		}
+
+		.crud-conn,
+		.crud-create-all-table,
+		.crud-db-create-table,
+		.crud-layer-box{
+			margin:auto;
+		}
+
+		.crud-table,
+		.crud-table-data,
+		.crud th,
+		.crud td,
+		.crud-layer{
+			overflow:auto;
+		}
+
+		.crud th,
+		.crud td{
+			max-width:100px;
+		}
+
+		.crud-conn,
+		.crud-layer-box{
+			width:var(--crudv2);
+		}
+
+		.crud-layer-box{
+			min-width:var(--crudv2);
+		}
+
+		.crud-create-all-table,
+		.crud-db-create-table{
+			max-width:var(--crudv3);
+		}
+
+		.crud input,
+		.crud select,
+		.crud textarea,
+		.crud table,
+		.crud-layer{
+			width:100%;
+		}
+
+		.crud-table{
+			width:calc(100% - 40px);
+		}
+
+		.crud-btn{
+			width:calc(100% - 20px);
+		}
+
+		.crud input,
+		.crud textarea{
+			box-sizing:border-box;
+		}
+
+		.crud-btn,
+		.crud-back,
+		.crud-x,
+		.crud-drop-table,
+		.crud-run-sql,
+		.crud table thead{
+			text-align:center;
+		}
+
+		.crud-btn,
+		.crud-back,
+		.crud-x,
+		.crud-drop-table,
+		.crud-run-sql{
+			cursor:pointer;
+		}
+
+		.crud-run-sql,
+		.crud-x{
+			float:right;
+		}
+
+		.crud-layer{
+			top:0;
+		}
+
+		.crud,
+		.crud-layer-box{
+			background:var(--crudcw);
+		}
+
+		.crud-invalid-js{
+			color:var(--crudci);
+		}
+
+		.crud textarea{
+			resize:vertical;
+		}
+
+		.crud-layer{
+			height:100%;
+		}
+
+		.crud-table-data{
+			max-height:350px;
+		}
+
+		.crud textarea{
+			max-height:250px;
+		}
+
+		.crud textarea{
+			height:50px;
+		}
+
+		.crud-table-btns{
+			height:41px;
+		}
+
+		.crud-btn,
+		.crud-back,
+		.crud-x,
+		.crud-drop-table,
+		.crud-run-sql{
+			background:var(--crudc2);
+		}
+
+		.crud thead tr{
+			background:var(--crudc4);
+		}
+
+		.crud tbody tr:nth-child(odd){
+			background:var(--crudc5);
+		}
+
+		.crud tbody tr:hover{
+			background:var(--crudc5h);
+		}
+
+		.crud{
+			font-size:16px;
+		}
+
+		.crud samp{
+			font-size:12px;
+		}
+
+		.crud-btn,
+		.crud-back,
+		.crud-x,
+		.crud-drop-table,
+		.crud-run-sql,
+		.crud thead{
+			color:var(--crudcw);
+		}
+
+		.crud{
+			z-index:1;
+		}
+
+		.crud-text{
+			z-index:2;
+		}
+
+		.crud-x,
+		.crud-layer{
+			z-index:3;
+		}
+
+		.crud{}
+			.crud-conn{}
+				.crud-text{}
+				.crud-conn input{}
+				.crud-btn{}
+			.crud-create-all-table{}
+				.crud-back{
+					width:100px;
+				}
+				.crud-create-table{}
+				.crud-all-tables{}
+			.crud-db-create-table{}
+				.crud-db-create-table-info{}
+					.crud-x{
+						width:25px;
+					}
+			.crud-show-table{}
+				.crud-table{}
+					.crud-table-btns{}
+						.crud-drop-table{}
+						.crud-run-sql{}
+					.crud-table-data{}
+							.crud table{}
+							.crud table thead{}
+							.crud table thead tr{}
+							.crud table thead tr th{}
+							.crud table tbody{}
+							.crud table tbody tr{}
+							.crud table tbody tr td{}
+				.crud-layer{
+					background:rgba(0,0,0,.7);
+				}
+					.crud-layer-box{
+						resize:both;
+						overflow-y:auto;
+					}
+		@media only screen and (max-width:224px){
+			.crud{
+				display:none;
+			}
+		}
+
+		header{
+			width: 100%;
+			min-width: 200px;
+			max-width: 500px;
+			padding: 10px;
+			box-sizing: border-box;
+			margin: auto;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		input[type=submit]{
+			border: none;
+			background: black;
+			color: white;
+			cursor: pointer;
+			padding: 5px 10px;
+		}
+		.user{
+			color: darkmagenta;
+			text-transform: capitalize;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h3>Bun venit <span class="user">--user</span></h3>
+		<form action="../script/backend/php/logout.php" method="post">
+			<input type="hidden" name="user-name" value="__user">
+			<input type="submit" name="user-logout" value="Logout">
+		</form>
+	</header>
+	<div class="crud">
+		<div class="crud-conn">
+			<div class="crud-text lang-crud-conn-t-js"></div>
+			<input type="text" class="crud-conn-host-js lang-crud-conn-i-js" />
+			<div class="crud-text lang-crud-conn-t-js"></div>
+			<input type="text" class="crud-conn-db-js lang-crud-conn-i-js" />
+			<div class="crud-text lang-crud-conn-t-js"></div>
+			<input type="text" class="crud-conn-user-js lang-crud-conn-i-js" />
+			<div class="crud-text lang-crud-conn-t-js"></div>
+			<input type="text" class="crud-conn-pass-js lang-crud-conn-i-js" />
+			<div class="crud-btn crud-conn-btn-js lang-crud-conn-t-js"></div>
+		</div>
+
+		<div class="crud-create-all-table dn-js">
+			<div class="crud-back crud-back-to-conn-js lang-crud-back-js"></div>
+
+			<div class="crud-create-table crud-create-table-js">
+				<div class="crud-btn crud-create-table-btn-js lang-crud-create-table-btn-js"></div>
+			</div>
+
+			<div class="crud-all-tables crud-all-tables-js">
+				<div class="crud-text lang-crud-select-table-js"></div>
+				<select class="crud-select-table-js"></select>
+			</div>
+		</div>
+
+		<div class="crud-db-create-table dn-js">
+			<div class="crud-back crud-back-to-all-table-js lang-crud-back-js"></div>
+
+			<div class="crud-db-create-table-info">
+				<div class="crud-text lang-crud-db-create-table-n-info"></div>
+				<input type="text" class="crud-db-new-table-name-js" />
+				<div class="crud-db-create-table-info-js">
+					<div class="crud-db-x-column-js">
+						<div class="crud-x crud-x-column-name-js">X</div>
+						<div class="crud-text lang-crud-db-create-table-c-info"></div>
+						<input type="text" class="crud-db-new-table-column-name-js" />
+					</div>
+				</div>
+				<div class="crud-btn crud-db-add-new-table-column-js lang-crud-db-create-table-ac-info"></div>
+				<div class="crud-btn crud-db-save-new-table-js lang-crud-db-create-table-st-info"></div>
+			</div>
+		</div>
+
+		<div class="crud-show-table dn-js">
+			<div class="crud-back crud-back-to-all-table-js lang-crud-back-js"></div>
+
+			<div class="crud-table crud-table-js"></div>
+		</div>
+
+		<div class="crud-layer dn-js">
+			<div class="crud-layer-box"></div>
+		</div>
+	</div>
+
+<script>
+	const crud = {
+		init(){
+			this.setEnv();
+			this.setUILaing();
+			this.connect();
+			this.createTable();
+			this.requestTableData();
+		},
+		to:``,
+		css:[
+			`dn-js`,
+			`crud-text-js`,
+			`crud-invalid-js`
+		],
+		d:document,
+		maxChars:4095,
+		lang:null,
+		conn:null,
+		ccat:null,
+		cst:null,
+		cdbct:null,
+		ct:null,
+		ctextarea:null,
+		ccount:null,
+		setEnv(){
+			this.lang = this.getLang();
+			this.ccat = this.select(`.crud-create-all-table`);
+			this.cst = this.select(`.crud-select-table-js`);
+			this.cdbct = this.select(`.crud-db-create-table`);
+		},
+		select(e){
+			return this.d.querySelector(e);
+		},
+		selectAll(e){
+			return this.d.querySelectorAll(e);
+		},
+		create(e=`div`){
+			return this.d.createElement(e);
+		},
+		send(_,string,a,f=()=>{},m=`post`){
+			let x=new XMLHttpRequest();
+			if(Array.isArray(_)){
+				x.addEventListener(`readystatechange`,()=>{
+					if(x.readyState==4&&x.status==200){
+						for(let i=0;i<_.length;++i){
+							let o=typeof _[i]==`object`?_[i]:this.select(_[i]),
+								arr=x.responseText.split(`,`);
+							if(
+								o.tagName == `INPUT` || 
+								o.tagName == `TEXTAREA`
+							){
+								o.value=arr[i];
+							}
+							else{
+								o.innerHTML=arr[i];
+							}
+						}
+						f();
+					}
+				});
+				x.open(m,a,!0);
+				x.setRequestHeader(`Content-type`,`application/x-www-form-urlencoded`);
+				x.send(string);
+			}
+		},
+		getLang(){
+			let _ = localStorage.getItem(`lang`),l;
+			switch(_){
+				case `en`:
+					l = `en`;
+					break;
+				default:
+					l = `ro`;
+			}
+			return l;
+		},
+		language:{
+			"ro":{
+				conn:{
+					t:[
+						`Domeniu web`,
+						`Nume baza de date`,
+						`Utilizator`,
+						`Parola`,
+						`Conectare`
+					],
+					i:[
+						`${window.location.hostname}`,
+						`test`,
+						`root`,
+						``
+					]
+				},
+				back:`&#10564;`,
+				createTable:{
+					b:`Creeaza o tabela`,
+					info:{
+						txt:{
+							n:`Nume tabela (obligatoriu numai litere)`,
+							c:`Adauga numele unei coloane din tabela (obligatoriu numai litere)`,
+							ac:`Adauga alta coloana`,
+							st:`Salveaza tabela`
+						}
+					}
+				},
+				select:`Selecteaza o tabela pentru a fi modificata sau vizualizata`,
+				showTable:[
+					`Sterge tabelul`,
+					`SQL`
+				],
+				js:{
+					conn:`Te rog sa completezi toate campurile necesare.`,
+					selTable:`Te rog sa selectezi o tabela.`,
+					table:{
+						invalidName:`Acest camp este vital in crearea unei tabele in baza de date. Numele tabelei nu poate fi un sir gol, nu trebuie sa contina caractere speciale ori cifre, trebuie sa inceapa cu litera si poate contine mai apoi mai multe caractere spatiu sau caracterul minus.`,
+						invalidColumnName:`Campurile cu coloane nu pot contine un sir gol, nu trebuie sa contina caractere speciale ori cifre, trebuie sa inceapa cu litera si pot contine mai apoi mai multe caractere spatiu sau caractere minus. Daca v-ati razgandit asupra existentei unor coloane, puteti foarte usor sa le stergeti, insa este obligatoriu prezenta a cel putin o coloana.`,
+						drop:`Esti sigur ca vrei sa stergi acest tabel ? Nu il vei mai putea recupera.`,
+
+						sql:`Foloseste aceasta comanda doar daca stii foarte bine ce faci. Trebuie sa ai cunostinte solide despre limbajul SQL.`,
+						action:{
+							a:`Actiune`,
+							n:`Adauga`,
+							e:`Editeaza`,
+							et:`Editare terminata`,
+							d:`Sterge`,
+							dr:`Esti sigur ca vrei sa stergi acest rand ?`
+						}
+					}
+				}
+			},
+			"en":{
+				conn:{
+					t:[
+						`Web domain`,
+						`Database name`,
+						`User`,
+						`Password`,
+						`Login`
+					],
+					i:[
+						`${window.location.hostname}`,
+						`test`,
+						`root`,
+						``
+					]
+				},
+				back:`&#10564;`,
+				createTable:{
+					b:`Create a table`,
+					info:{
+						txt:{
+							n:`Table name (letters only required)`,
+							c:`Add a column name from the table (only letters required)`,
+							ac:`Add another column`,
+							st:`Save the table`
+						}
+					}
+				},
+				select:`Select a table to edit or view`,
+				showTable:[
+					`Delete table`,
+					`SQL`
+				],
+				js:{
+					conn:`Please fill in all the required fields.`,
+					selTable:`Please select a table.`,
+					table:{
+						invalidName:`This field is vital in creating a table in the database. The table name cannot be an empty string, must not contain special characters or numbers, must begin with the letter, and may then contain more space characters or a minus character.`,
+						invalidColumnName:`Fields with columns cannot contain an empty string, must not contain special characters or numbers, must begin with a letter, and can then contain more space characters or minus characters. If you have changed your mind about the existence of some columns, you can easily delete them, but the presence of at least one column is mandatory.`,
+						drop:`Are you sure you want to delete this table ? You will not be able to recover it.`,
+
+						sql:`Use this command only if you know very well what you are doing. You must have a solid knowledge of SQL.`,
+						action:{
+							a:`Action`,
+							n:`Add`,
+							e:`Edit`,
+							et:`Finished editing`,
+							d:`Delete`,
+							dr:`Are you sure you want to delete this line ?`
+						}
+					}
+				}
+			}
+		},
+		setUILaing(){
+			const l = this.lang,
+				lcct = this.selectAll(`.lang-crud-conn-t-js`),
+				lcci = this.selectAll(`.lang-crud-conn-i-js`),
+				lcb = this.selectAll(`.lang-crud-back-js`),
+				lcst = this.select(`.lang-crud-select-table-js`),
+				lcctb = this.select(`.lang-crud-create-table-btn-js`),
+				lcdbctni = this.select(`.lang-crud-db-create-table-n-info`),
+				lcdbctci = this.selectAll(`.lang-crud-db-create-table-c-info`),
+				lcdbctaci = this.select(`.lang-crud-db-create-table-ac-info`),
+				lcdbctsti = this.select(`.lang-crud-db-create-table-st-info`),
+				arr = [
+					this.select(`.lang-crud-table-drop-js`),
+					this.select(`.lang-run-sql-js`)
+				],
+				lca = this.select(`.lang-crud-action-js`),
+				lcan = this.select(`.lang-crud-action-n-js`),
+				lcae = this.selectAll(`.lang-crud-action-e-js`),
+				lcad = this.selectAll(`.lang-crud-action-d-js`);
+			if(lcct != null){
+				for(let i=0;lcct[i];++i){
+					lcct[i].innerHTML = this.language[l].conn.t[i];
+				}
+				for(let i=0;lcci[i];++i){
+					lcci[i].value = this.language[l].conn.i[i];
+				}
+				for(let i=0;lcb[i];++i){
+					lcb[i].innerHTML = this.language[l].back;
+				}
+				lcctb.innerHTML = this.language[l].createTable.b;
+				lcst.innerHTML = this.language[l].select;
+				lcdbctni.innerHTML = this.language[l].createTable.info.txt.n;
+				for(let i=0;lcdbctci[i];++i){
+					lcdbctci[i].innerHTML = this.language[l].createTable.info.txt.c;
+				}
+				lcdbctaci.innerHTML = this.language[l].createTable.info.txt.ac;
+				lcdbctsti.innerHTML = this.language[l].createTable.info.txt.st;
+				for(let i=0;arr[i];++i){
+					if(arr[i]!=null){
+						arr[i].innerHTML = this.language[l].showTable[i];
+					}
+				}
+				if(lca!=null){
+					lca.innerHTML = this.language[l].js.table.action.a;
+				}
+				if(lcan!=null){
+					lcan.innerHTML = this.language[l].js.table.action.n;
+				}
+				for(let i=0;lcae[i];++i){
+					if(lcae[i]!=null){
+						lcae[i].innerHTML = this.language[l].js.table.action.e;
+					}
+				}
+				for(let i=0;lcad[i];++i){
+					if(lcad[i]!=null){
+						lcad[i].innerHTML = this.language[l].js.table.action.d;
+					}
+				}
+			}
+		},
+		connect(){
+			const l = this.lang,
+				dn = this.css[0],
+				btn = this.select(`.crud-conn-btn-js`),
+				cc = this.select(`.crud-conn`),
+				cbtc = this.select(`.crud-back-to-conn-js`);
+			btn.addEventListener(`click`,()=>{
+				let h = this.select(`.crud-conn-host-js`),
+					d = this.select(`.crud-conn-db-js`),
+					u = this.select(`.crud-conn-user-js`),
+					p = this.select(`.crud-conn-pass-js`),
+					cct = this.select(`.crud-create-table-js`);
+				if(
+					h.value == `` || h.value == ` ` || 
+					d.value == `` || d.value == ` ` || 
+					u.value == `` || u.value == ` `
+				){
+					alert(this.language[l].js.conn);
+					return;
+				}
+				this.conn = `crud-host=${h.value}&crud-db=${d.value}&crud-user=${u.value}&crud-pass=${p.value}`;
+				this.send(
+					[this.cst],
+					`${this.conn}&crud-conn`,
+					this.to
+				);
+				cc.classList.add(dn);
+				this.ccat.classList.remove(dn);
+			});
+			cbtc.addEventListener(`click`,()=>{
+				this.ccat.classList.add(dn);
+				cc.classList.remove(dn);
+			});
+		},
+		createTable(){
+			let dn = this.css[0],
+				cctb = this.select(`.crud-create-table-btn-js`),
+				cdbantc = this.select(`.crud-db-add-new-table-column-js`),
+				cdbsnt = this.select(`.crud-db-save-new-table-js`);
+			cctb.addEventListener(`click`,()=>{
+				this.ccat.classList.add(dn);
+				this.cdbct.classList.remove(dn);
+			});
+			cdbantc.addEventListener(`click`,()=>{
+				let cdbcti = this.select(`.crud-db-create-table-info-js`),
+					cdbxc = this.select(`.crud-db-x-column-js`),
+					div = this.create(),
+					crudxcn;
+				div.innerHTML = cdbxc.innerHTML;
+				cdbcti.appendChild(div);
+				crudxcn = this.selectAll(`.crud-x-column-name-js`);
+				for(let i=1;crudxcn[i];++i){
+					crudxcn[i].addEventListener(`click`,()=>{
+						try{
+							crudxcn[i].parentNode.outerHTML = ``;
+						}
+						catch(e){}
+					});
+				}
+			});
+			cdbsnt.addEventListener(`click`,()=>{
+				let l = this.lang,
+					strColumns = ``,
+					tableName = this.select(`.crud-db-new-table-name-js`),
+					columns = this.selectAll(`.crud-db-new-table-column-name-js`),
+					tname = tableName.value,
+					patt = /^[a-zA-Z][a-z\s-A-Z]*$/;
+				if(
+					tname == `` || 
+					!tableName.value.match(patt)
+				){
+					alert(this.language[l].js.table.invalidName);
+					tableName.focus();
+					return;
+				}
+				for(let i=0;columns[i];++i){
+					if(
+						columns[i].value == `` || 
+						!columns[i].value.match(patt)
+					){
+						alert(this.language[l].js.table.invalidColumnName);
+						columns[i].focus();
+						return;
+					}
+					strColumns += `${columns[i].value},`;
+				}
+				this.send(
+					[this.cst],
+					`${this.conn}&crud-new-table=${tableName.value}&crud-new-table-columns=${strColumns.slice(0,-1)}`,
+					this.to
+				);
+			});
+		},
+		requestTableData(){
+			const l = this.lang,
+				dn = this.css[0],
+				csta = this.select(`.crud-show-table`),
+				cbtat = this.selectAll(`.crud-back-to-all-table-js`),
+				f = ()=>{
+					this.setUILaing();
+					this.requestRunSQL();
+					this.requestDropTable();
+					this.countInsertedText();
+					this.requestInsertRow();
+					this.actionsOnRow();
+				};
+			this.ct = this.select(`.crud-table-js`);
+			this.cst.addEventListener(`change`,()=>{
+				const tableName = this.cst.value;
+				if(tableName == ``){
+					alert(this.language[l].js.selTable);
+					return;
+				}
+				this.send(
+					[this.ct],
+					`${this.conn}&crud-table-name=${this.cst.value}`,
+					this.to,
+					f
+				);
+				csta.classList.remove(dn);
+				this.ccat.classList.add(dn);
+			});
+			for(let i=0;cbtat[i];++i){
+				cbtat[i].addEventListener(`click`,()=>{
+					csta.classList.add(dn);
+					this.cdbct.classList.add(dn);
+					this.ccat.classList.remove(dn);
+				});
+			}
+		},
+		requestRunSQL(){
+			let btn = this.select(`.crud-run-sql`);
+			btn.addEventListener(`click`,()=>{
+				let l = this.lang,
+					table = btn.dataset.tname,
+					ask = `${this.language[l].js.table.sql}\n\n${table}`,
+					sql;
+				if(sql = prompt(ask,``)){
+					this.send(
+						[btn],
+						`${this.conn}&crud-run-sql=${sql}`,
+						this.to
+					);
+				}
+			});
+		},
+		requestDropTable(){
+			let btn = this.select(`.crud-drop-table`);
+			btn.addEventListener(`click`,()=>{
+				const l = this.lang,
+					table = btn.dataset.tname;
+				if(confirm(this.language[l].js.table.drop)){
+					this.send(
+						[this.cst,this.ct],
+						`${this.conn}&crud-drop-table=${table}`,
+						this.to
+					);
+				}
+			});
+		},
+		countInsertedText(){
+			this.ctextarea = this.selectAll(`.crud-textarea`);
+			this.ccount = this.selectAll(`.crud-count`);
+			for(let i=0;this.ctextarea[i];++i){
+				this.ctextarea[i].addEventListener(`input`,()=>{
+					let n = this.ctextarea[i].value.length;
+					if(n==0){
+						this.ccount[i].innerHTML = ``;
+						return;
+					}
+					if(n>this.maxChars){
+						this.ccount[i].classList.add(this.css[2]);
+					}
+					else{
+						this.ccount[i].classList.remove(this.css[2]);
+					}
+					this.ccount[i].innerHTML = `${n} (${this.maxChars})`;
+				});
+			}
+		},
+		requestInsertRow(){
+			let cnr = this.select(`.crud-new-row-js`);
+			cnr.addEventListener(`click`,()=>{
+				let t = cnr.dataset.tname,
+					cn = this.selectAll(`.crud-cn-js`),
+					ct = this.ctextarea,
+					f = ()=>{
+						for(let i=0;this.ctextarea[i];++i){
+							this.ctextarea[i].value=``;
+							this.ccount[i].innerHTML=``;
+						}
+					},
+					s='INSERT INTO `'+t+'`(';
+				for(let i=0;cn[i];++i){
+					s+='`'+cn[i].innerHTML+'`,';
+				}
+				s=s.slice(0,-1);
+				s+=') VALUES (';
+				for(let i=0;ct[i];++i){
+					s+=`'${ct[i].value}',`;
+				}
+				s=s.slice(0,-1);
+				s+=`)`;
+				this.send(
+					[cnr],
+					`${this.conn}&crud-insert-row=${s}`,
+					this.to,
+					f
+				);
+			});
+		},
+		actionsOnRow(){
+			let dn = this.css[0],
+				l = this.lang,
+				cae = this.selectAll(`.crud-action-e-js`),
+				cad = this.selectAll(`.crud-action-d-js`);
+			for(let i=0;cae[i];++i){
+				cae[i].addEventListener(`click`,()=>{
+					let table = cae[i].dataset.tname,
+						id = cae[i].dataset.id,
+						cet = `crud-edit-text`, text,
+						ceb = `crud-edit-btn`, btn,
+						layer = this.select(`.crud-layer`),
+						box = this.select(`.crud-layer-box`),
+						cn = this.selectAll(`.crud-cn-js`),
+						pp = cae[i].parentNode.parentNode,
+						ch = pp.children,
+						s = ``;
+
+					layer.classList.remove(dn);
+					layer.addEventListener(`click`,()=>{
+						layer.classList.add(dn);
+						box.innerHTML=``;
+					});
+					box.addEventListener(`click`,(e)=>{
+						e.stopPropagation();
+					});
+
+					for(let i=0;cn[i];++i){
+						s += `<div class="crud-text">${i+1}. ${cn[i].innerHTML}</div>`;
+						s += `<textarea class="${cet}">${ch[i+1].innerHTML}</textarea>`;
+					}
+					s += `<div class="crud-btn ${ceb}">${this.language[l].js.table.action.et}</div>`;
+					box.innerHTML = s;
+					text = this.selectAll(`.${cet}`);
+					btn = this.select(`.${ceb}`);
+					btn.addEventListener(`click`,()=>{
+						let sql = "UPDATE `"+table+"` SET ";
+						for(let i=0;cn[i];++i){
+							sql += "`"+cn[i].innerHTML+"`='"+text[i].value+"',";
+						}
+						sql = sql.slice(0,-1);
+						sql += " WHERE id="+id;
+						this.send(
+							[box],
+							`${this.conn}&crud-update-row=${sql}`,
+							this.to
+						);
+					});
+				});
+				cad[i].addEventListener(`click`,()=>{
+					let l = this.lang,
+						pp = cad[i].parentNode.parentNode,
+						table = cad[i].dataset.tname,
+						id = cad[i].dataset.id;
+					if(confirm(this.language[l].js.table.action.dr)){
+						this.send(
+							[pp],
+							`${this.conn}&crud-action-table=${table}&crud-delete-row=${id}`,
+							this.to
+						);
+					}
+				});
+			}
+		}
+	}
+	crud.init();
+</script>
+</body>
+</html>
